@@ -1,7 +1,7 @@
 "use client"
 
-import{ useState } from "react"
-import { Link } from "react-router-dom"
+import{ useEffect,useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { FiArrowRight, FiTarget, FiTrendingUp, FiUsers, FiAward } from "react-icons/fi"
 import LoginModal from "../components/LoginModal"
@@ -9,6 +9,7 @@ import LoginModal from "../components/LoginModal"
 const Home = () => {
   const { user } = useAuth()
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const navigate = useNavigate()
 
   const domains = [
     { name: "Business Analytics", color: "bg-blue-500", problems: 150 },
@@ -42,83 +43,11 @@ const Home = () => {
     },
   ]
 
-  if (user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome back, {user.name}! 👋</h1>
-            <p className="text-xl text-gray-600">Continue your journey to career success</p>
-          </div>
-
-          {/* Progress, Quick Actions, Today's Goal */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Card 1 */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <div className="flex items-center mb-4">
-                <FiTarget className="mr-2 h-5 w-5 text-blue-600" />
-                <h3 className="text-lg font-semibold">Your Progress</h3>
-              </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Problems Solved</span>
-                  <span className="font-semibold">{user.solvedQuestions || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Current Streak</span>
-                  <span className="font-semibold text-orange-600">{user.streak || 0} days</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Study Plans</span>
-                  <span className="font-semibold">{user.enrolledPlans?.length || 0}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white shadow rounded-lg p-6 space-y-4">
-              <h3 className="text-lg font-semibold">Quick Actions</h3>
-              <Link to="/problems">
-                <button className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                  <FiTarget className="h-4 w-4" />
-                  Solve Problems
-                </button>
-              </Link>
-              <Link to="/study-plans">
-                <button className="w-full flex items-center justify-center gap-2 border border-blue-600 text-blue-600 py-2 px-4 rounded hover:bg-blue-50">
-                  <FiTrendingUp className="h-4 w-4" />
-                  Study Plans
-                </button>
-              </Link>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white shadow rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold mb-4">Today's Goal</h3>
-              <div className="text-3xl font-bold text-blue-600 mb-2">3</div>
-              <p className="text-gray-600">Problems to maintain streak</p>
-              <button className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-sm">
-                Start Practicing
-              </button>
-            </div>
-          </div>
-
-          {/* Domains */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {domains.map((domain) => (
-              <div key={domain.name} className="bg-white p-4 rounded-lg text-center shadow hover:shadow-md transition-shadow cursor-pointer">
-                <div className={`w-12 h-12 ${domain.color} rounded-lg mx-auto mb-3 flex items-center justify-center`}>
-                  <span className="text-white font-bold text-lg">{domain.name.charAt(0)}</span>
-                </div>
-                <h3 className="font-semibold text-sm mb-1">{domain.name}</h3>
-                <p className="text-xs text-gray-500">{domain.problems} problems</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
+  useEffect(() =>{
+    if(user){
+      navigate("/study-plans")
+    }
+  },[user, navigate])
 
   return (
     <>
@@ -176,7 +105,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Domains Section */}
+      {/* Domains Section
       <section className="py-20 bg-white text-gray-900 hover:drop-shadow-[0_10px_15px_rgba(245,158,11,0.3)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -196,7 +125,60 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section> */}
+
+
+      <section className="py-20 bg-[#f4f8ff] text-gray-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <span className="relative inline-block">
+                <span className="z-10 relative">Features</span>
+                <span className="absolute -bottom-1 left-0 w-full h-1 bg-amber-400 z-0 transform -rotate-3"></span>
+              </span>{" "}
+              that drive your preparation
+            </h2>
+            <p className="text-lg text-gray-600">
+              Try before you buy. Experience real features before committing.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-8">
+            {[
+              {
+                title: "Real-World Marketing Challenges",
+                desc: "Solve brand strategy, campaign design, and customer insight problems modeled on actual industry scenarios.",
+                tilt: "-rotate-2",
+              },
+              {
+                title: "Weekly Contests & Leaderboards",
+                desc: "Compete with peers in weekly marketing battles and climb the leaderboard to earn recognition.",
+                tilt: "rotate-2",
+              },
+              {
+                title: "Expert Evaluation and Feedback",
+                desc: "Get your answers reviewed by experienced marketing professionals to understand what truly works in the real world.",
+                tilt: "-rotate-3",
+              },
+              {
+                title: "Badges & Progress Tracking",
+                desc: "Earn skill-based badges and track your growth through personalized performance charts.",
+                tilt: "rotate-3",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className={`w-64 p-6 bg-white rounded-xl shadow-md hover:shadow-xl transform ${feature.tilt} hover:rotate-0 transition-all duration-300`}
+              >
+                <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-600">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
+
+
 
       {/* CTA Section */}
       <section className="py-20 bg-gray-900 text-white hover:drop-shadow-[0_10px_15px_rgba(245,158,11,0.3)]">

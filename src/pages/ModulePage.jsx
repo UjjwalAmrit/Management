@@ -50,35 +50,85 @@ const ModulePage = () => {
     }
   }
 
-  const handleSubmit = async () => {
-    setSubmitting(true)
 
-    try {
-      const response = await api.post(`/modules/${moduleId}/submit`, {
-        answers: Object.entries(answers).map(([questionId, selectedOptionIndex]) => ({
-          questionId,
-          selectedOptionIndex: Number.parseInt(selectedOptionIndex),
-        })),
-      })
+  // use this function to link with backend for submitting answers
 
-      navigate(`/modules/${moduleId}/review`, {
-        state: {
-          results: response.data,
-          answers: answers,
-        },
-      })
-    } catch (error) {
-      console.error("Failed to submit answers:", error)
-      alert("Failed to submit answers. Please try again.")
-    } finally {
-      setSubmitting(false)
-    }
-  }
+  // const handleSubmit = async () => {
+  //   setSubmitting(true)
+
+  //   try {
+  //     const response = await api.post(`/modules/${moduleId}/submit`, {
+  //       answers: Object.entries(answers).map(([questionId, selectedOptionIndex]) => ({
+  //         questionId,
+  //         selectedOptionIndex: Number.parseInt(selectedOptionIndex),
+  //       })),
+  //     })
+
+  //     navigate(`/modules/${moduleId}/review`, {
+  //       state: {
+  //         results: response.data,
+  //         answers: answers,
+  //       },
+  //     })
+  //   } catch (error) {
+  //     console.error("Failed to submit answers:", error)
+  //     alert("Failed to submit answers. Please try again.")
+  //   } finally {
+  //     setSubmitting(false)
+  //   }
+  // }
+
+
+  const handleSubmit = () => {
+    setSubmitting(true);
+
+    const resultData = currentQuestions.map((question) => {
+      const selected = answers[question._id];
+      return {
+        _id: question._id,
+        question: question.question,
+        options: question.options,
+        correctOptionIndex: question.correctOptionIndex,
+        userAnswer: selected,
+        isCorrect: selected === question.correctOptionIndex,
+        explanation: question.explanation,
+      };
+    });
+
+    const correctAnswers = resultData.filter(q => q.isCorrect).length;
+    const totalQuestions = currentQuestions.length;
+    const score = Math.round((correctAnswers / totalQuestions) * 100);
+
+    const reviewPayload = {
+      module: {
+        _id: moduleId,
+        title: currentModule.title,
+        description: currentModule.description,
+      },
+      questions: resultData,
+      correctAnswers,
+      totalQuestions,
+      score,
+    };
+
+    navigate(`/modules/${moduleId}/review`, {
+      state: {
+        results: reviewPayload,
+        answers,
+      },
+    });
+
+    setSubmitting(false);
+  };
+
+
+
+
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
       </div>
     )
   }
@@ -134,11 +184,11 @@ const ModulePage = () => {
   const allQuestionsAnswered = answeredQuestions === currentQuestions.length
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 max-w-4xl mx-auto pt-20">
       <div className="mb-8">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
+          className="inline-flex items-center text-gray-900 hover:text-amber-600 mb-4"
         >
           <FiArrowLeft className="h-4 w-4 mr-2" />
           Back to Study Plan
@@ -167,7 +217,7 @@ const ModulePage = () => {
 
           <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
             <div
-              className="bg-blue-600 h-2.5 rounded-full"
+              className="bg-amber-600 h-2.5 rounded-full"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -189,7 +239,7 @@ const ModulePage = () => {
                 value={index}
                 checked={answers[currentQuestion._id] == index}
                 onChange={() => handleAnswerChange(currentQuestion._id, index)}
-                className="form-radio h-4 w-4 text-blue-600"
+                className=" h-4 w-4 accent-amber-600 cursor-pointer"
               />
               <span className="text-gray-700">{option}</span>
             </label>
@@ -201,7 +251,7 @@ const ModulePage = () => {
         <button
           onClick={handlePrevious}
           disabled={currentQuestionIndex === 0}
-          className="px-4 py-2 border rounded-md text-sm bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+          className="px-4 py-2 border rounded-xl text-sm bg-white text-gray-600 hover:bg-gray-300 disabled:opacity-90 cursor-pointer"
         >
           Previous
         </button>
@@ -213,10 +263,10 @@ const ModulePage = () => {
               onClick={() => setCurrentQuestionIndex(index)}
               className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
                 index === currentQuestionIndex
-                  ? "bg-blue-600 text-white"
+                  ? "bg-amber-600 text-white"
                   : answers[currentQuestions[index]._id]
-                  ? "bg-green-100 text-green-800"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-green-200 text-green-800"
+                  : "bg-gray-200 text-gray-600 hover:bg-gray-600"
               }`}
             >
               {index + 1}
@@ -228,14 +278,14 @@ const ModulePage = () => {
           <button
             onClick={handleSubmit}
             disabled={!allQuestionsAnswered || submitting}
-            className="px-4 py-2 rounded-md text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 rounded-md text-sm text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50 cursor-pointer"
           >
             {submitting ? "Submitting..." : "Submit"}
           </button>
         ) : (
           <button
             onClick={handleNext}
-            className="px-4 py-2 rounded-md text-sm text-white bg-blue-600 hover:bg-blue-700"
+            className="px-4 py-2 rounded-xl text-sm text-white bg-amber-600 hover:bg-amber-700"
           >
             Next
           </button>

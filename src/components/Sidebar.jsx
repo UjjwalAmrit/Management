@@ -1,131 +1,102 @@
+// Sidebar.jsx
 "use client"
 
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
-import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi"
+import { FiTarget } from "react-icons/fi"
+import {
+  FiClock,
+  FiUsers,
+  FiCalendar,
+  FiPlay,
+  FiAward
+} from "react-icons/fi"
+import { FaTrophy } from "react-icons/fa"
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
+const Sidebar = ({leaderboard = [],getRankIcon}) => {
+  const location = useLocation()
+  const { user } = useAuth()
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const isStudyPlanPage = location.pathname === "/study-plans"
 
-  const { login } = useAuth()
-  const navigate = useNavigate()
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-
-    const result = await login(formData.email, formData.password)
-
-    if (result.success) {
-      navigate("/")
-    } else {
-      setError(result.error)
-    }
-
-    setLoading(false)
-  }
+  
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="max-w-md w-full space-y-6">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="mt-2 text-gray-600">Sign in to your account</p>
+    <>
+    {isStudyPlanPage && user && (
+      <div className="w-full rounded-lg h-full ml-2 px-4 py-4 pt-10 bg-gray-900">
+        {/* Welcome Header */}
+        <div className="text-center mb-4">
+          <h1 className="text-lg font-semibold text-white">
+            Welcome, {user.name}! 👋
+          </h1>
+          <p className="text-sm text-gray-300">
+            Keep up the great work!
+          </p>
         </div>
 
-        <div className="bg-white shadow-md rounded-lg p-6 space-y-6 border">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-100 text-red-700 px-4 py-2 rounded-md border border-red-300 text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Email Field */}
-            <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="relative">
-                <FiMail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
+        {/* Progress Card */}
+        <div className="bg-white shadow rounded-2xl p-4 mb-4">
+          <div className="flex items-center mb-3">
+            <FiTarget className="mr-2 h-8 w-8 text-amber-300" />
+            <h3 className="text-md font-medium">Your Progress</h3>
+          </div>
+          <div className="space-y-1 text-sm">
+            <div className="flex justify-between">
+              <span>Problems Solved</span>
+              <span className="font-semibold">{user.solvedQuestions || 0}</span>
             </div>
-
-            {/* Password Field */}
-            <div className="space-y-1">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="relative">
-                <FiLock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  className="w-full pl-10 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
-                </button>
-              </div>
+            <div className="flex justify-between">
+              <span>Streak</span>
+              <span className="font-semibold text-amber-600">{user.streak || 0} days</span>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition duration-200"
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-          </form>
-
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-                Sign up here
-              </Link>
-            </p>
+            <div className="flex justify-between">
+              <span>Study Plans</span>
+              <span className="font-semibold">{user.enrolledPlans?.length || 0}</span>
+            </div>
           </div>
         </div>
+
+        {/* Daily Goal Card */}
+        <div className="bg-white shadow rounded-lg p-4 text-center">
+          <h3 className="text-md font-medium mb-2">Today's Goal</h3>
+          <div className="text-2xl font-bold text-amber-400 mb-1">3</div>
+          <p className="text-sm text-gray-600 mb-2">Problems to maintain streak</p>
+          <button className="w-full bg-gray-900 text-white py-1 px-2 rounded-xl text-sm hover:bg-amber-600">
+            Start Practicing
+          </button>
+        </div>
       </div>
-    </div>
+    )};
+
+
+
+    {location.pathname === "/contest" && leaderboard.length > 0 && (
+      <div className="sticky top-24 bg-white shadow rounded-xl p-4 max-h-[calc(100vh-5rem)] overflow-y-auto mb-5 ml-5">
+        <h2 className="text-lg font-semibold mb-3">Leaderboard</h2>
+        {leaderboard.map((user) => (
+          <div key={user.rank} className="flex items-center justify-between border-b pb-2 pt-2 last:border-0 mb-3">
+            <div className="flex items-center gap-4">
+              <div className="text-xl w-8">{getRankIcon(user.rank)}</div>
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                {user.avatar}
+              </div>
+              <div>
+                <p className="font-medium text-sm text-gray-800">{user.name}</p>
+                <p className="text-xs text-gray-500">{user.domain}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-blue-600 font-bold">{user.score}</p>
+              <p className="text-xs text-gray-500">pts</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </>
+
   )
 }
 
-export default Login
+export default Sidebar

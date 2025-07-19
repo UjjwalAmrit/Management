@@ -56,7 +56,7 @@ const StudyPlanDetails = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
       </div>
     )
   }
@@ -119,14 +119,14 @@ const StudyPlanDetails = () => {
   const currentTopics = topics.length > 0 ? topics : demoTopics
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-white pt-20">
       <Sidebar />
 
       <div className="flex-1 p-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <Link to="/study-plans" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
+            <Link to="/study-plans" className="inline-flex items-center text-gray-900 hover:text-amber-600 mb-4">
               <FiArrowLeft className="h-4 w-4 mr-2" />
               Back to Study Plans
             </Link>
@@ -150,8 +150,8 @@ const StudyPlanDetails = () => {
                   </div>
                 </div>
 
-                <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                  <FiPlay className="h-4 w-4 mr-2" />
+                <button className="flex items-center px-4 py-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 cursor-pointer">
+                  <FiPlay className="h-4 w-4 mr-2"/>
                   {currentStudyPlan.progress > 0 ? "Continue Learning" : "Start Learning"}
                 </button>
               </div>
@@ -182,7 +182,7 @@ const StudyPlanDetails = () => {
                   </div>
                   <div className="w-full h-2 bg-gray-200 rounded">
                     <div
-                      className="h-2 bg-blue-600 rounded"
+                      className="h-2 bg-amber-600 rounded"
                       style={{ width: `${currentStudyPlan.progress}%` }}
                     ></div>
                   </div>
@@ -233,12 +233,12 @@ const StudyPlanDetails = () => {
                   </div>
 
                   <div className="ml-6">
-                    <Link to={`/topics/${topic._id}`}>
+                    <Link to={`/modules/${topic._id}`}>
                       <button
                         className={`px-4 py-2 rounded ${
                           topic.completed
-                            ? "border border-gray-300 text-gray-700 bg-white hover:bg-gray-100"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
+                            ? "border border-gray-300 text-gray-700 bg-white hover:bg-gray-300 cursor-pointer"
+                            : "bg-amber-400 text-white hover:bg-amber-600 cursor-pointer"
                         }`}
                       >
                         {topic.completed ? "Review" : "Start Topic"}

@@ -92,7 +92,7 @@ const Problems = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 pt-20">
       <Sidebar />
       <div className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">

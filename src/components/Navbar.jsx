@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { FiMenu, FiX, FiUser, FiLogOut, FiTrendingUp } from "react-icons/fi"
 
 const Navbar = ({setShowLoginModal}) => {
+  const location = useLocation()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,35 +29,45 @@ const Navbar = ({setShowLoginModal}) => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900 shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center pb-1 justify-start pl-4">
             <Link to="/" className="flex items-center space-x-2">
-              <FiTrendingUp className="h-8 w-8 text-white" />
-              <span className="text-xl font-bold text-amber-600">JobPrep Arena</span>
+              <img src="/logo.png" alt="Logo" className="h-16 w-45 rounded-full" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6 mr-4">
             {user ? (
               <>
                 <Link
                   to="/problems"
-                  className="px-4 py-1.5 text-white hover:text-amber-600 transition-all duration-300 font-medium"
+                  className={`font-medium ${
+                    location.pathname === "/problems"
+                      ? "text-amber-600 font-semibold"
+                      : "text-white hover:text-amber-600"
+                  }`}
                 >
                   Problems
                 </Link>
                 <Link
                   to="/study-plans"
-                  className="px-4 py-1.5 text-white hover:text-amber-600 transition-all duration-300 font-medium"
+                  className={`font-medium ${
+                    location.pathname === "/study-plans"
+                      ? "text-amber-600 font-semibold"
+                      : "text-white hover:text-amber-600"
+                  }`}
                 >
                   Study Plans
                 </Link>
                 <Link
                   to="/contest"
-                  className="px-4 py-1.5 text-white hover:text-amber-600 transition-all duration-300 font-medium"
+                  className={`font-medium ${
+                    location.pathname === "/contest"
+                      ? "text-amber-600 font-semibold"
+                      : "text-white hover:text-amber-600"
+                  }`}
                 >
                   Contest
                 </Link>
@@ -202,7 +213,7 @@ const Navbar = ({setShowLoginModal}) => {
             </div>
           </div>
         )}
-      </div>
+      
     </nav>
   )
 }

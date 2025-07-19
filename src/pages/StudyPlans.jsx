@@ -57,7 +57,7 @@ const StudyPlans = () => {
   )
 
   const renderCard = (plan) => (
-    <div key={plan._id} className="bg-white rounded-lg shadow p-5 hover:shadow-lg transition-shadow">
+    <div key={plan._id} className="bg-white rounded-lg shadow p-5 hover:drop-shadow-[0_8px_10px_rgba(0,0,0,0.15)] transition-shadow duration-300">
       <div className="mb-4 flex items-center justify-between">
         <div className={`w-12 h-12 ${getDomainColor(plan.domain)} rounded-lg flex items-center justify-center`}>
           <span className="text-white font-bold text-lg">{plan.domain.charAt(0)}</span>
@@ -90,7 +90,7 @@ const StudyPlans = () => {
       </div>
 
       <Link to={`/study-plans/${plan._id}`} className="block">
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        <button className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-700">
           {plan.progress > 0 ? "Continue" : "Start Plan"}
         </button>
       </Link>
@@ -106,11 +106,12 @@ const StudyPlans = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 pt-20">
+      <div className="w-1/5 sticky top-20 self-start h-fit">
       <Sidebar />
+      </div>
 
-      <div className="flex-1 p-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="w-4/5 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Study Plans</h1>
             <p className="text-gray-600">Structured learning paths to master your domain</p>
@@ -119,12 +120,12 @@ const StudyPlans = () => {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             {[
-              { icon: <FiTarget />, label: "Available Plans", value: studyPlans.length, color: "text-blue-600" },
-              { icon: <FiBookOpen />, label: "Enrolled", value: 0, color: "text-green-600" },
-              { icon: <FiTrendingUp />, label: "Avg Progress", value: "0%", color: "text-purple-600" },
-              { icon: <FiUsers />, label: "Active Learners", value: "1.2k", color: "text-orange-600" },
+              { icon: <FiTarget className="mr-2 h-8 w-8" />, label: "Available Plans", value: studyPlans.length, color: "text-gray-900" },
+              { icon: <FiBookOpen className="mr-2 h-8 w-8" />, label: "Enrolled", value: 0, color: "text-green-600" },
+              { icon: <FiTrendingUp className="mr-2 h-8 w-8" />, label: "Avg Progress", value: "0%", color: "text-purple-600" },
+              { icon: <FiUsers className="mr-2 h-8 w-8" />, label: "Active Learners", value: "1.2k", color: "text-orange-600" },
             ].map((stat, idx) => (
-              <div key={idx} className="bg-white p-4 rounded-lg shadow flex items-center">
+              <div key={idx} className="bg-white p-4 rounded-2xl flex items-center shadow hover:drop-shadow-[0_8px_10px_rgba(0,0,0,0.15)] transition-shadow duration-300">
                 <div className={`h-8 w-8 mr-3 ${stat.color}`}>{stat.icon}</div>
                 <div>
                   <p className="text-2xl font-bold">{stat.value}</p>
@@ -186,7 +187,6 @@ const StudyPlans = () => {
               ].map(renderCard)}
             </div>
           )}
-        </div>
       </div>
     </div>
   )

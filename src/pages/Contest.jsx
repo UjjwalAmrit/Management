@@ -9,7 +9,7 @@ import {
   FiPlay,
   FiAward
 } from "react-icons/fi"
-import { FaTrophy } from "react-icons/fa" // ✅ Replaced FiTrophy with FaTrophy
+import { FaTrophy } from "react-icons/fa"
 
 const Contest = () => {
   const [contests, setContests] = useState([])
@@ -52,6 +52,18 @@ const Contest = () => {
       prize: "$300",
       status: "completed",
     },
+    {
+      _id: "contest-4",
+      title: "Finance Fundamentals Quiz",
+      description: "Quick-fire questions on financial analysis and investment principles.",
+      domain: "Finance",
+      difficulty: "Adavanced",
+      startTime: new Date(Date.now() - 35 * 60 * 1000),
+      duration: 60,
+      participants: 445,
+      prize: "$500",
+      status: "live",
+    },
   ]
 
   const demoLeaderboard = [
@@ -79,9 +91,12 @@ const Contest = () => {
     return `#${rank}`
   }
 
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
+    <div className="flex min-h-screen bg-gray-100 pt-20">
+      <div className="w-1/5">
+        <Sidebar leaderboard={leaderboard} getRankIcon={getRankIcon} />
+      </div>
       <div className="flex-1 p-6 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-2 text-gray-900">Contest Arena</h1>
         <p className="mb-6 text-gray-600">Compete with peers and showcase your skills</p>
@@ -146,9 +161,9 @@ const Contest = () => {
                     disabled={contest.status === "completed"}
                     className={`px-4 py-2 rounded-md text-white font-semibold ${
                       contest.status === "upcoming"
-                        ? "bg-blue-600 hover:bg-blue-700"
+                        ? "bg-amber-400 hover:bg-amber-600"
                         : contest.status === "live"
-                        ? "bg-green-600 hover:bg-green-700"
+                        ? "bg-green-600 hover:bg-green-800"
                         : "bg-gray-400 cursor-not-allowed"
                     }`}
                   >
@@ -159,29 +174,6 @@ const Contest = () => {
                       : "View Results"}
                   </button>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Leaderboard */}
-        <h2 className="text-2xl font-semibold mb-4">Leaderboard</h2>
-        <div className="bg-white shadow rounded-lg p-4 space-y-4">
-          {leaderboard.map((user) => (
-            <div key={user.rank} className="flex items-center justify-between border-b pb-2 last:border-0">
-              <div className="flex items-center gap-4">
-                <div className="text-xl w-10">{getRankIcon(user.rank)}</div>
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                  {user.avatar}
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">{user.name}</p>
-                  <p className="text-sm text-gray-500">{user.domain}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg text-blue-600 font-bold">{user.score}</p>
-                <p className="text-sm text-gray-500">points</p>
               </div>
             </div>
           ))}

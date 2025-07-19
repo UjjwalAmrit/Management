@@ -35,7 +35,7 @@ const ReviewPage = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
       </div>
     )
   }
@@ -106,11 +106,11 @@ const ReviewPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 pt-20">
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
+          className="inline-flex items-center text-gray-900 hover:text-amber-600 mb-4"
         >
           <FiArrowLeft className="h-4 w-4 mr-2" /> Back to Study Plan
         </button>
@@ -142,7 +142,7 @@ const ReviewPage = () => {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
-                className="bg-blue-600 h-3 rounded-full"
+                className="bg-amber-600 h-3 rounded-full"
                 style={{ width: `${score}%` }}
               ></div>
             </div>
@@ -215,9 +215,9 @@ const ReviewPage = () => {
                   </div>
                 ))}
               </div>
-              <div className="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-md">
-                <h4 className="font-semibold text-blue-900 mb-1">Explanation</h4>
-                <p className="text-blue-800 text-sm">{q.explanation}</p>
+              <div className="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-md">
+                <h4 className="font-semibold text-gray-900 mb-1">Explanation</h4>
+                <p className="text-gray-700 text-sm">{q.explanation}</p>
               </div>
             </div>
           ))}
@@ -225,10 +225,10 @@ const ReviewPage = () => {
 
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
           <button onClick={() => navigate("/study-plans")}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
+            className="px-4 py-2 border border-gray-300 rounded-md text-gray-900 hover:bg-gray-300"
           >Back to Study Plans</button>
           <button onClick={() => navigate(`/modules/${moduleId}`)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600"
           >Retake Module</button>
           <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
             Continue to Next Module

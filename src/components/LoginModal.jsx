@@ -30,7 +30,8 @@ const Login = ({onClose}) => {
     const result = login(formData.email, formData.password)
 
     if (result.success) {
-      navigate("/")
+      onClose()
+      navigate("/study-plans")
     } else {
       setError(result.error)
     }

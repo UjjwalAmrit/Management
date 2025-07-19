@@ -59,9 +59,7 @@ function App() {
               <Route
                 path="/login"
                 element={
-                  <PublicRoute>
-                    <LoginModal />
-                  </PublicRoute>
+                  <Navigate to="/" />
                 }
               />
               <Route
